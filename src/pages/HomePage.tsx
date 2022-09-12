@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useLinkClickHandler } from "react-router-dom";
+import { RepoCard } from "../components/RepoCard";
 import { useDebounse } from "../hooks/debounce";
-import { useSearchUsersQuery } from "../store/github/github.api";
+import { useLazyGetUserReposQuery, useSearchUsersQuery } from "../store/github/github.api";
 
 export function HomePage() {
 	const [search, setSearch] = useState('')
 	const [dropdown, setDropdown] = useState(false)
+
 	const debounced = useDebounse(search, 500)
+
 	const {isError, isLoading, data} = useSearchUsersQuery(debounced, {
 		skip: debounced.length < 3,
 		refetchOnFocus: true
 	})
+
+	const [fetchRepos, {isLoading: areReposLoading, data: repos}] = useLazyGetUserReposQuery()
+
+	const clickHandler = (username: string) => {
+		fetchRepos(username)
+	}
 	
 
 	useEffect(() => {
@@ -34,11 +44,20 @@ export function HomePage() {
 					{data?.map(user => (
 						<li
 							key={user.id}
+							onClick={() => clickHandler(user.login)}
 							className="py-2 px-4 hover:bg-gray-500 hover:text-white transition-colors cursor-pointer"
 						>{user.login}</li>
 					))}
 				</ul>}
+
+				<div>
+					{areReposLoading && <p className="text-center">Repos are loading...</p>}
+					{repos?.map(repo => <p> <RepoCard repo={repo} key={repo.id}/> </p>)}
+				</div>
+
 			</div>
+
+
 
 		</div>
 	)
