@@ -19,6 +19,7 @@ export function HomePage() {
 
 	const clickHandler = (username: string) => {
 		fetchRepos(username)
+		setDropdown(false)
 	}
 	
 
@@ -52,7 +53,7 @@ export function HomePage() {
 
 				<div>
 					{areReposLoading && <p className="text-center">Repos are loading...</p>}
-					{repos?.map(repo => <p> <RepoCard repo={repo} key={repo.id}/> </p>)}
+					{repos?.map(repo => <div> <RepoCard repo={repo} key={repo.id}/> </div>)}
 				</div>
 
 			</div>
