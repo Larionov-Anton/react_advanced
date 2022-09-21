@@ -5,10 +5,6 @@ import { FavouritesPage } from './pages/FavouritesPage';
 import { Navigation } from './components/Navigation';
 
 function App() {
-
-	useEffect(() => {
-		document.title = "Search for Github username";  
-	}, []);
 	
   return (
 	<>
