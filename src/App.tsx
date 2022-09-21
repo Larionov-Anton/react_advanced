@@ -1,11 +1,15 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import {Routes, Route} from 'react-router-dom'
 import { HomePage } from './pages/HomePage';
 import { FavouritesPage } from './pages/FavouritesPage';
 import { Navigation } from './components/Navigation';
 
 function App() {
+
+	useEffect(() => {
+		document.title = "Search for Github username";  
+	}, []);
+	
   return (
 	<>
 		<Navigation />
